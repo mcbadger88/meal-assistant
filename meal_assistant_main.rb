@@ -4,10 +4,6 @@ require_relative './printer'
 require 'tty-prompt'
 require 'pp'
 
-# List of saved meals
-meal_array = []
-# List of saved ingredients
-ingredients_list = []
 # Shopping History (extension)
 
 #**EM Read from file and populate meal_array
@@ -16,21 +12,49 @@ ingredients_list = []
 # meal_array = eval(data)
 # pp meal_array
 
+# Util
+
 # User Choice Flows
-def user_select_create_new_meal(prompt, meal_array)
-    ingredients = []
+def user_select_create_new_meal(prompt, meal_manager, ingredient_manager)
     # Collect User Input
+
     name = prompt.ask("What is the name of your new meal?")
-    #Ask for the ingredients
-        #2 options: display existing ingredients
-        #- enter new ingredient
+    # Get the ingredients for the new meal from the user
+    input = prompt.select("What ingredients do you need for #{name}?", ["Choose From Previous Ingredients", "Add New Ingredient"])
+    new_meal_ingredients = []
+    while true
+        if input == "Choose From Previous Ingredients"
+            user_ingredients = prompt.multi_select("") do |menu|
+                menu.enum '.'
+                ingredient_manager.saved_ingredients.each do |ingredient|
+                    menu.choice ingredient, ingredient
+                end
+            end
+            # Add user ingredients to list for this meal recipie
+            new_meal_ingredients.concat(user_ingredients)
+        elsif input == "Add New Ingredient"
+            ingredient_name = prompt.ask("What is the name of the ingredient you wish to add?")
+            # Create New Ingredient
+            new_ingredient = Ingredient.new(ingredient_name)
+            ingredient_manager.add_ingredient_to_manager(new_ingredient)
+            # Add user ingredient to list for this meal recipie
+            new_meal_ingredients << new_ingredient
+        else 
+            assert()
+        end
+        if prompt.yes?('Choose more ingredients?')
+            input = prompt.select("", ["Choose From Previous Ingredients", "Add New Ingredient"])
+        else 
+            break
+        end
+    end 
     #Ask for the preference out of the three options
     preference = prompt.select("What preference would you like to give this meal?", [:low.capitalize, :medium.capitalize, :high.capitalize])
     mealtimes_array = prompt.multi_select("Which meal-times is this meal appropriate for?", [:breakfast.capitalize, :lunch.capitalize, :dinner.capitalize])
 
-    # Add new meal to Saved Meals
-    new_meal = Meal.new(name, ingredients, preference, mealtimes_array)
-    meal_array << new_meal 
+    # Create New Meal with user input
+    new_meal = Meal.new(name, new_meal_ingredients, preference, mealtimes_array)
+    meal_manager.add_meal_to_manager(new_meal)
 end
 
 
@@ -38,7 +62,12 @@ end
 
 
 #**EM create options menu !
+
+# Initilisation
 prompt = TTY::Prompt.new
+meal_manager = MealManager.new()
+ingredient_manager = IngredientManager.new()
+
 # input = prompt.select("Welcome to your Meal Assistant. What would you like to do today?", default: 'Display My Saved Meals')
 input = prompt.select("Welcome to your Meal Assistant. What would you like to do today?", ["Display My Saved Meals", "Add New Meal", "Generate Weekly Plan", "Generate Shopping List", "Exit Meal Assistant"])
 puts input.freeze
@@ -46,9 +75,9 @@ puts input.freeze
 
 while true 
     if input == "Display My Saved Meals"
-        print_my_saved_meals(meal_array)
+        print_my_saved_meals(meal_manager.saved_meals)
     elsif input == "Add New Meal"
-        user_select_create_new_meal(prompt, meal_array)
+        user_select_create_new_meal(prompt, meal_manager, ingredient_manager)
     elsif input == "Generate Weekly Plan"
         #user_select_generate_weekly_plan()
     elsif input == "Generate Shopping List"

@@ -1,5 +1,23 @@
 # Meals Module
 # Handles creating, deleting and modifying meals in the meals database.
+
+class MealManager
+    @@count = 0
+    attr_reader(:saved_meals)
+    def initialize
+        @@count = @@count + 1
+        @saved_meals= []
+    end
+
+    def add_meal_to_manager(meal)
+        @saved_meals << meal
+    end
+
+    def to_s
+        pp @saved_meals
+    end
+end
+
 class Meal 
     attr_reader(:name, :ingredients, :preference, :suitable_for)
     def initialize(name, ingredients, preference, mealtimes_array)
