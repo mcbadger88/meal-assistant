@@ -1,0 +1,7 @@
+/n
+        { name: vfvfvf,
+        ingrediente: [],
+        preference: Low,
+        suitable_for: {:breakfast=>false, :lunch=>true, :dinner=>false}
+        }
+        
