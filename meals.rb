@@ -13,6 +13,53 @@ class MealManager
         @saved_meals << meal
     end
 
+    def generate_weekly_plan
+        weighted_breakfast_array = []
+        weighted_lunch_array = []
+        weighted_dinner_array = []
+
+        weighting_converter_hash = {
+            high: 3,
+            medium: 2,
+            low: 1
+        }
+        weekly_meal_hash = {
+            breakfast_array: [],
+            lunch_array: [],
+            dinner_array: []
+        }
+        # Construct weighted arrays for 'randomly' choosing 7 breakfast, lunches, and dinners
+        @saved_meals.each do |meal|
+            if meal.suitable_for[:breakfast]
+                weighting_converter_hash[meal.preference].times do |i|
+                    weighted_breakfast_array << meal
+                end
+            end
+            if meal.suitable_for[:lunch]
+                weighting_converter_hash[meal.preference].times do |i|
+                    weighted_lunch_array << meal
+                end 
+            end
+            if meal.suitable_for[:dinner]
+                weighting_converter_hash[meal.preference].times do |i|
+                    weighted_dinner_array << meal
+                end
+            end
+        end
+
+        # Choose 7 meals from each array and store in ouput
+        7.times do |i|
+            j = rand(weighted_breakfast_array.length)
+            weekly_meal_hash[:breakfast_array] << weighted_breakfast_array[j]
+            k = rand(weighted_lunch_array.length)
+            weekly_meal_hash[:lunch_array] << weighted_lunch_array[k]
+            l = rand(weighted_dinner_array.length)
+            weekly_meal_hash[:dinner_array] << weighted_dinner_array[l]
+        end
+
+        return weekly_meal_hash
+    end
+
     def to_s
         pp @saved_meals
     end

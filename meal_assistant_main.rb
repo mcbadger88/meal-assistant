@@ -4,17 +4,9 @@ require_relative './printer'
 require 'tty-prompt'
 require 'pp'
 
-# Shopping History (extension)
-
-#**EM Read from file and populate meal_array
-# data = File.read('data.txt')
-# pp data
-# meal_array = eval(data)
-# pp meal_array
-
-# Util
-
+# 
 # User Choice Flows
+#
 def user_select_create_new_meal(prompt, meal_manager, ingredient_manager)
     # Collect User Input
 
@@ -57,18 +49,22 @@ def user_select_create_new_meal(prompt, meal_manager, ingredient_manager)
     meal_manager.add_meal_to_manager(new_meal)
 end
 
+def user_select_generate_weekly_plan(meal_manager)
+    return meal_manager.generate_weekly_plan()
+end
 
 
-
-
-#**EM create options menu !
-
+# 
 # Initilisation
+#
 prompt = TTY::Prompt.new
 meal_manager = MealManager.new()
 ingredient_manager = IngredientManager.new()
+# To Do: Read CSV and populate DBs
 
-# input = prompt.select("Welcome to your Meal Assistant. What would you like to do today?", default: 'Display My Saved Meals')
+#
+# Begin User Flow
+#
 input = prompt.select("Welcome to your Meal Assistant. What would you like to do today?", ["Display My Saved Meals", "Add New Meal", "Generate Weekly Plan", "Generate Shopping List", "Exit Meal Assistant"])
 puts input.freeze
 
@@ -79,7 +75,8 @@ while true
     elsif input == "Add New Meal"
         user_select_create_new_meal(prompt, meal_manager, ingredient_manager)
     elsif input == "Generate Weekly Plan"
-        #user_select_generate_weekly_plan()
+        weekly_meal_hash = user_select_generate_weekly_plan(meal_manager)
+        print_weekly_plan(weekly_meal_hash[:breakfast], weekly_meal_hash[:lunch], weekly_meal_hash[:dinner])
     elsif input == "Generate Shopping List"
         #user_select_generate_shoping_list()
     elsif input == "Exit Meal Assistant"
@@ -88,42 +85,11 @@ while true
         #This case shouldn't be possible with tty prompt
         assert()
     end
-    input = prompt.select("Woud you like to do something else?", ["Display My Saved Meals", "Add New Meal", "Generate Weekly Plan", "Generate Shopping List", "Exit Meal Assistant"])
+    input = prompt.select("Would you like to do something else?", ["Display My Saved Meals", "Add New Meal", "Generate Weekly Plan", "Generate Shopping List", "Exit Meal Assistant"])
 end
 
-
-#system 'clear'
-pp meal_array
-meal_arr_str = ""
-meal_array.each do |meal|
-   # meal_arr_str = meal_arr_str + meal.to_s
-   meal_arr_str = meal_arr_str + "/n" + meal.to_hash
-end
-
-# File.write('data.txt', meal_arr_str)
-
-# ##### Test ######
-# #Create Ingredients
-# yogurt = Ingredient.new("yogurt")
-# almonds = Ingredient.new("almonds")
-# banana = Ingredient.new("banana")
-
-# chicken = Ingredient.new("chicken")
-# wrap = Ingredient.new("wrap")
-# avocado = Ingredient.new("avocado")
-
-# beef_mince = Ingredient.new("beef mince")
-# chopped_tomato = Ingredient.new("chopped tomato")
-# kidney_beans = Ingredient.new("Kidney Beans")
-# olive_oil = Ingredient.new("Olive Oil")
-# butter = Ingredient.new("Butter")
-
-
-# #Create Meals
-# yogurt_breakfast = Meal.new("Yogurt and Almonds", [yogurt, almonds, banana], :high, [:breakfast, :lunch])
-# wrap_lunch = Meal.new("Chicken Wrap", [chicken, wrap, avocado], :high, [:lunch])
-# chilli_dinner = Meal.new("Chilli con Carne", [beef_mince, chopped_tomato, kidney_beans, olive_oil, butter], :medium, [:lunch, :dinner])
-
-# # Test chilli dinner populated as expected
-# puts chilli_dinner
+# 
+# Shutdown
+#
 system 'clear'
+# To Do: Write DBs to CSV file
