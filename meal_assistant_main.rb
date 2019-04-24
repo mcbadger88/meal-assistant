@@ -17,21 +17,20 @@ ingredients_list = []
 # pp meal_array
 
 # User Choice Flows
-def user_select_create_new_meal(prompt)
+def user_select_create_new_meal(prompt, meal_array)
     ingredients = []
-    #Ask the meal name
+    # Collect User Input
     name = prompt.ask("What is the name of your new meal?")
     #Ask for the ingredients
         #2 options: display existing ingredients
         #- enter new ingredient
     #Ask for the preference out of the three options
     preference = prompt.select("What preference would you like to give this meal?", [:low.capitalize, :medium.capitalize, :high.capitalize])
-    #Suitable mealtimes
     mealtimes_array = prompt.multi_select("Which meal-times is this meal appropriate for?", [:breakfast.capitalize, :lunch.capitalize, :dinner.capitalize])
 
+    # Add new meal to Saved Meals
     new_meal = Meal.new(name, ingredients, preference, mealtimes_array)
-    puts new_meal
-    return new_meal
+    meal_array << new_meal 
 end
 
 
@@ -47,10 +46,9 @@ puts input.freeze
 
 while true 
     if input == "Display My Saved Meals"
-        pp meal_array
         print_my_saved_meals(meal_array)
     elsif input == "Add New Meal"
-        meal_array << user_select_create_new_meal(prompt)
+        user_select_create_new_meal(prompt, meal_array)
     elsif input == "Generate Weekly Plan"
         #user_select_generate_weekly_plan()
     elsif input == "Generate Shopping List"
