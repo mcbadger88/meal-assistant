@@ -35,10 +35,6 @@ class ShoppingManager
     end
 
     def generate_new_shopping_list(weekly_meal_hash)
-        # pp weekly_meal_hash
-        # Iterate Meals and add ingredients to shopping list
-        # If item already in list, 
-        # pp weekly_meal_hash[:breakfast_array]
         @shopping_list = []
         @corresponding_meals = {}
         iterate_meals_and_add_ingredients_to_list(weekly_meal_hash[:breakfast_array])
@@ -47,7 +43,7 @@ class ShoppingManager
 
         # Print the List
         puts "
-        Grocery List Based on Most recent Weekly Plan:
+    Grocery List Based on Most recent Weekly Plan:
         "
         # pp @corresponding_meals
         @shopping_list.each do |item|

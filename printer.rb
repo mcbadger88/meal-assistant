@@ -1,7 +1,5 @@
 require 'tty-table'
 
-# Implement Printer module
-
 def print_my_saved_meals(meal_array)
 
     meal_array.each do |my_meal|
@@ -30,22 +28,6 @@ def print_my_saved_meals(meal_array)
         puts table.render(:unicode, padding: [0,4,0,2])
     end
 end
-
-# # Implement Printer module
-# def print_my_saved_meals(meal_array)
-#     puts "Debug: In print_my_saved_meals"
-#     puts meal_array
-# end
-
-
-# def print_weekly_plan(breakfast_array, lunch_array, dinner_array)
-#     puts "Breakfast Array:"
-#     pp breakfast_array
-#     puts "Lunch Array:"
-#     pp lunch_array
-#     puts "Dinner Array:"
-#     pp dinner_array
-# end
 
 def print_weekly_plan(breakfast_array, lunch_array, dinner_array)
     
@@ -81,6 +63,8 @@ def print_weekly_plan(breakfast_array, lunch_array, dinner_array)
         end
     end
 
-    table = TTY::Table.new(['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], [breakfast_rows_array, lunch_rows_array, dinner_rows_array])
+    array_of_arrays = [breakfast_rows_array, lunch_rows_array, dinner_rows_array]
+    table = TTY::Table.new(['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], array_of_arrays)
     puts table.render(:unicode, padding:[1,1], alignments:[:center], multiline: true)
+    return array_of_arrays
 end
