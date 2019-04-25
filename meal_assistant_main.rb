@@ -134,7 +134,13 @@ while true
         weekly_meal_hash = user_select_generate_weekly_plan(meal_manager)
         print_weekly_plan(weekly_meal_hash[:breakfast_array], weekly_meal_hash[:lunch_array], weekly_meal_hash[:dinner_array])
     elsif input == "Generate Shopping List"
-        user_select_generate_shopping_list(shopping_manager, ingredient_manager, weekly_meal_hash)
+        if weekly_meal_hash == {}
+            puts "
+Cannot generate shopping list until Weekly Meal Plan has been created. Please generate Weekly Meal Plan or select a different option.
+            "
+        else
+            user_select_generate_shopping_list(shopping_manager, ingredient_manager, weekly_meal_hash)
+        end
     elsif input == "Exit Meal Assistant"
         break
     else
