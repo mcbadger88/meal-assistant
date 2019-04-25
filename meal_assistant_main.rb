@@ -8,11 +8,10 @@ require 'pp'
 # Utils
 #
 def populate_persistent_databases(meal_manager, ingredients_manager)
-    # To Do: Read CSV and populate DBs
-    #**EM Read from file and populate meal_array
+    # Read from file and populate meal_array
     data = File.read('data.txt')
     meal_array = eval(data)
-    pp meal_array
+    # pp meal_array
 
     if meal_array == nil
         return
@@ -20,8 +19,7 @@ def populate_persistent_databases(meal_manager, ingredients_manager)
 
     # Populate databases
     meal_array.each do |meal_hash|
-
-        # Load and create ingredients as necessary
+        # Read and create ingredients as necessary
         ingredients_array = []
         meal_hash[:ingredients].each do |ingredient|
             ingredient_object = ingredients_manager.lookup_ingredient_object(ingredient)
@@ -39,7 +37,6 @@ def populate_persistent_databases(meal_manager, ingredients_manager)
 end
 
 def save_databases(meal_manager)
-    # To Do: Write DBs to CSV file
     meal_db_string = "["
     meal_manager.saved_meals.each do |meal|
         if meal_db_string != "["
@@ -113,7 +110,7 @@ end
 prompt = TTY::Prompt.new
 meal_manager = MealManager.new()
 ingredient_manager = IngredientManager.new()
-# populate_persistent_databases(meal_manager, ingredient_manager)
+populate_persistent_databases(meal_manager, ingredient_manager)
 
 
 #

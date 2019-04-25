@@ -30,8 +30,13 @@ class MealManager
         }
         # Construct weighted arrays for 'randomly' choosing 7 breakfast, lunches, and dinners
         @saved_meals.each do |meal|
+            # puts "DEBUG: in saved meals loop"
+            # pp meal
             if meal.suitable_for[:breakfast]
+                # puts "DEBUG: suitable for breakfast"
                 weighting_converter_hash[meal.preference].times do |i|
+                    # puts "DEBUG: adding to breakfast array"
+                    # puts weighting_converter_hash[meal.preference]
                     weighted_breakfast_array << meal
                 end
             end
@@ -101,12 +106,12 @@ class Meal
 
         mealtimes_string_array = []
         @suitable_for.each do |mealtime, value|
-            if value
-                mealtimes_string_array.push(mealtime)
+            if value == true 
+                mealtimes_string_array.push(mealtime.to_sym)
             end
         end
 
-        "{ name: \"#{@name.strip}\", ingredients: #{ingredients_string_array}, preference: \:#{@preference.downcase}, suitable_for: #{@suitable_for} }"
+        "{ name: \"#{@name.strip}\", ingredients: #{ingredients_string_array}, preference: \:#{@preference.downcase}, suitable_for: #{mealtimes_string_array} }"
     end
 end
 

@@ -82,5 +82,5 @@ def print_weekly_plan(breakfast_array, lunch_array, dinner_array)
     end
 
     table = TTY::Table.new(['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], [breakfast_rows_array, lunch_rows_array, dinner_rows_array])
-    puts table.render(:unicode, padding:[1,1], alignments:[:center])
+    puts table.render(:unicode, padding:[1,1], alignments:[:center], multiline: true)
 end

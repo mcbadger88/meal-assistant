@@ -11,7 +11,6 @@ class IngredientManager
     end
 
     def lookup_ingredient_object(name_string)
-        pp @saved_ingredients
         @saved_ingredients.each do |object|
             if object.name == name_string
                 return object
