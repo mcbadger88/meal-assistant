@@ -1,7 +1,1 @@
-/n
-        { name: vfvfvf,
-        ingrediente: [],
-        preference: Low,
-        suitable_for: {:breakfast=>false, :lunch=>true, :dinner=>false}
-        }
-        
+[{ name: "drgedrg", ingredients: ["drgdr"], preference: :low, suitable_for: {:breakfast=>true, :lunch=>false, :dinner=>false} }]

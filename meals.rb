@@ -93,14 +93,20 @@ class Meal
         Preference rating: #{@preference.capitalize}, 
         Suitable for #{@suitable_for} "
     end
-    def to_hash
-        str = "
-        { name: #{@name},
-        ingrediente: #{@ingredients},
-        preference: #{@preference},
-        suitable_for: #{@suitable_for}
-        }
-        "
+    def to_hash_string
+        ingredients_string_array = []
+        @ingredients.each do |ingredient|
+            ingredients_string_array.push(ingredient.name.strip)
+        end
+
+        mealtimes_string_array = []
+        @suitable_for.each do |mealtime, value|
+            if value
+                mealtimes_string_array.push(mealtime)
+            end
+        end
+
+        "{ name: \"#{@name.strip}\", ingredients: #{ingredients_string_array}, preference: \:#{@preference.downcase}, suitable_for: #{@suitable_for} }"
     end
 end
 

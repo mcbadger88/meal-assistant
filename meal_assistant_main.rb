@@ -5,6 +5,55 @@ require 'tty-prompt'
 require 'pp'
 
 # 
+# Utils
+#
+def populate_persistent_databases(meal_manager, ingredients_manager)
+    # To Do: Read CSV and populate DBs
+    #**EM Read from file and populate meal_array
+    data = File.read('data.txt')
+    meal_array = eval(data)
+    pp meal_array
+
+    if meal_array == nil
+        return
+    end
+
+    # Populate databases
+    meal_array.each do |meal_hash|
+
+        # Load and create ingredients as necessary
+        ingredients_array = []
+        meal_hash[:ingredients].each do |ingredient|
+            ingredient_object = ingredients_manager.lookup_ingredient_object(ingredient)
+            if ingredient_object == nil
+                ingredient_object = Ingredient.new(ingredient)
+                ingredients_manager.add_ingredient_to_manager(ingredient_object)
+            end
+            ingredients_array << ingredient_object
+        end
+
+        meal_object = Meal.new(meal_hash[:name], ingredients_array, meal_hash[:preference], meal_hash[:suitable_for])
+        meal_manager.add_meal_to_manager(meal_object)
+    end
+
+end
+
+def save_databases(meal_manager)
+    # To Do: Write DBs to CSV file
+    meal_db_string = "["
+    meal_manager.saved_meals.each do |meal|
+        if meal_db_string != "["
+            meal_db_string = meal_db_string + ", #{meal.to_hash_string.strip}"
+        else
+            meal_db_string = meal_db_string + "#{meal.to_hash_string.strip}"
+        end
+    end
+    meal_db_string = meal_db_string + "]"
+
+    File.write('data.txt', meal_db_string)
+end
+
+# 
 # User Choice Flows
 #
 def user_select_create_new_meal(prompt, meal_manager, ingredient_manager)
@@ -16,18 +65,22 @@ def user_select_create_new_meal(prompt, meal_manager, ingredient_manager)
     new_meal_ingredients = []
     while true
         if input == "Choose From Previous Ingredients"
-            user_ingredients = prompt.multi_select("") do |menu|
-                menu.enum '.'
-                ingredient_manager.saved_ingredients.each do |ingredient|
-                    menu.choice ingredient, ingredient
+            if ingredient_manager.saved_ingredients == []
+                puts "No Saved Ingredients"
+            else
+                user_ingredients = prompt.multi_select("") do |menu|
+                    menu.enum '.'
+                    ingredient_manager.saved_ingredients.each do |ingredient|
+                        menu.choice ingredient, ingredient
+                    end
                 end
+                # Add user ingredients to list for this meal recipie
+                new_meal_ingredients.concat(user_ingredients)
             end
-            # Add user ingredients to list for this meal recipie
-            new_meal_ingredients.concat(user_ingredients)
         elsif input == "Add New Ingredient"
             ingredient_name = prompt.ask("What is the name of the ingredient you wish to add?")
             # Create New Ingredient
-            new_ingredient = Ingredient.new(ingredient_name)
+            new_ingredient = Ingredient.new(ingredient_name.strip)
             ingredient_manager.add_ingredient_to_manager(new_ingredient)
             # Add user ingredient to list for this meal recipie
             new_meal_ingredients << new_ingredient
@@ -45,7 +98,7 @@ def user_select_create_new_meal(prompt, meal_manager, ingredient_manager)
     mealtimes_array = prompt.multi_select("Which meal-times is this meal appropriate for?", [:breakfast.capitalize, :lunch.capitalize, :dinner.capitalize])
 
     # Create New Meal with user input
-    new_meal = Meal.new(name, new_meal_ingredients, preference, mealtimes_array)
+    new_meal = Meal.new(name, new_meal_ingredients, preference.downcase, mealtimes_array)
     meal_manager.add_meal_to_manager(new_meal)
 end
 
@@ -60,7 +113,8 @@ end
 prompt = TTY::Prompt.new
 meal_manager = MealManager.new()
 ingredient_manager = IngredientManager.new()
-# To Do: Read CSV and populate DBs
+# populate_persistent_databases(meal_manager, ingredient_manager)
+
 
 #
 # Begin User Flow
@@ -76,7 +130,7 @@ while true
         user_select_create_new_meal(prompt, meal_manager, ingredient_manager)
     elsif input == "Generate Weekly Plan"
         weekly_meal_hash = user_select_generate_weekly_plan(meal_manager)
-        print_weekly_plan(weekly_meal_hash[:breakfast], weekly_meal_hash[:lunch], weekly_meal_hash[:dinner])
+        print_weekly_plan(weekly_meal_hash[:breakfast_array], weekly_meal_hash[:lunch_array], weekly_meal_hash[:dinner_array])
     elsif input == "Generate Shopping List"
         #user_select_generate_shoping_list()
     elsif input == "Exit Meal Assistant"
@@ -92,4 +146,5 @@ end
 # Shutdown
 #
 system 'clear'
-# To Do: Write DBs to CSV file
+save_databases(meal_manager)
+
