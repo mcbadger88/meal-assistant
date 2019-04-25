@@ -1,6 +1,7 @@
 require_relative './meals'
 require_relative './ingredients'
 require_relative './printer'
+require_relative './shopping_list'
 require 'tty-prompt'
 require 'pp'
 
@@ -103,6 +104,9 @@ def user_select_generate_weekly_plan(meal_manager)
     return meal_manager.generate_weekly_plan()
 end
 
+def user_select_generate_shopping_list(shopping_manager, ingredient_manager, weekly_meal_hash)
+    shopping_manager.generate_new_shopping_list(weekly_meal_hash)
+end
 
 # 
 # Initilisation
@@ -110,6 +114,7 @@ end
 prompt = TTY::Prompt.new
 meal_manager = MealManager.new()
 ingredient_manager = IngredientManager.new()
+shopping_manager = ShoppingManager.new()
 populate_persistent_databases(meal_manager, ingredient_manager)
 
 
@@ -119,7 +124,7 @@ populate_persistent_databases(meal_manager, ingredient_manager)
 input = prompt.select("Welcome to your Meal Assistant. What would you like to do today?", ["Display My Saved Meals", "Add New Meal", "Generate Weekly Plan", "Generate Shopping List", "Exit Meal Assistant"])
 puts input.freeze
 
-
+weekly_meal_hash = {}
 while true 
     if input == "Display My Saved Meals"
         print_my_saved_meals(meal_manager.saved_meals)
@@ -129,7 +134,7 @@ while true
         weekly_meal_hash = user_select_generate_weekly_plan(meal_manager)
         print_weekly_plan(weekly_meal_hash[:breakfast_array], weekly_meal_hash[:lunch_array], weekly_meal_hash[:dinner_array])
     elsif input == "Generate Shopping List"
-        #user_select_generate_shoping_list()
+        user_select_generate_shopping_list(shopping_manager, ingredient_manager, weekly_meal_hash)
     elsif input == "Exit Meal Assistant"
         break
     else

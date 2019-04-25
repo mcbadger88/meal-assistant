@@ -96,3 +96,8 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ![Screenshot](Screenshot2019.04.24.pm.png)
 24/04 16.04pm
 ![Screenshot](Screenshot2019.04.24.latepm.png)
+25/04 
+![Screenshot](Screenshot2019.04.25.png)
+25/04 
+![Screenshot](Screenshot2019.04.25.code.bug.png)
+
