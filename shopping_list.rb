@@ -14,10 +14,8 @@ class ShoppingManager
             end
         end
         if shopping_item == nil
-            shopping_item = ShoppingItem.new(ingredient)
+            shopping_item = ingredient
             @shopping_list << shopping_item
-        else
-            shopping_item.list_count = shopping_item.list_count + 1
         end
         if @corresponding_meals[shopping_item.name.to_sym] == nil
             @corresponding_meals[shopping_item.name.to_sym] = [meal_name]
@@ -69,17 +67,7 @@ class ShoppingManager
             # Once the end of the array is reached, print the last meal and count
             meals_str = meals_str + "#{count} #{prev_meal_name}, "
 
-            puts "Enough #{item.name} for #{meals_str}"
+            puts "Buy enough #{item.name} for #{meals_str}"
         end
-    end
-end
-
-
-class ShoppingItem < Ingredient
-    attr_accessor(:list_count)
-    def initialize ingredient_object
-        @ingredient = ingredient_object
-        @name = ingredient_object.name
-        @list_count = 0
     end
 end

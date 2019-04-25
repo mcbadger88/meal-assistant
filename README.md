@@ -87,6 +87,28 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 * Inspiration
 * etc
 
+## Written Notes and Diagrams
+### BrainStorming for app ideas:
+![App Structure](IMG_0506.jpg)
+
+### Initial Design Notes and Planning 23/04:
+![App Structure](IMG_0501.jpg)
+![App Structure](IMG_0503.jpg)
+![App Structure](IMG_0504.jpg)
+![App Structure](IMG_0505.jpg)
+
+### User Flows:
+![App Structure](IMG_0507.jpg)
+
+### App Structure explanation, Objects:
+![App Structure](IMG_0509.jpg)
+
+
+
+
+
+
+
 ## Record of work
 23/04/2019 2pm 
 ![Screenshot](screenshot23.04.2019.png)
@@ -98,8 +120,10 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ![Screenshot](Screenshot2019.04.24.latepm.png)
 25/04 
 ![Screenshot](Screenshot2019.04.25.png)
-25/04 
+25/04 Test Output
 ![Screenshot](Screenshot2019.04.25.code.bug.png)
+25/04 eve
+![Screenshot](Screenshot2019.04.25eve.png)
 
 Test Output
 ![Screenshot](TestOutput.png)
