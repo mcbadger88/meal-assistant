@@ -1,7 +1,7 @@
 
 # Meal Assistant
 
-Documentation for Coder Academy Term 1 Terminal App Project.
+Documentation for Terminal App Project.
 An app that delivers a Weekly Meal Plan and Shopping List, written in Ruby.
 
 ## Contributors
